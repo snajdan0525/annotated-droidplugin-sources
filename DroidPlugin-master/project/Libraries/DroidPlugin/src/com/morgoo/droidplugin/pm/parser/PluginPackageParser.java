@@ -55,12 +55,18 @@ import java.util.TreeMap;
  * Created by Andy Zhang(zhangyong232@gmail.com) on 2015/2/13.
  */
 public class PluginPackageParser {
-
-    private final File mPluginFile;
+	/*
+	之所以要保存这些信息，其实是效仿PackageManagerService,
+	PackageManagerService不仅承担安装解析AndroidManifest还保存了文件中定义四大组件等相关的信息,
+	并提供了这些信息的查询,而我们的插件并没有安装到系统中,是无法通过PackageManagerService中查到的,
+	这个时候我们需要Hook PackageManagerService这样需要查询或者获取插件AndroidManifest文件中相关信息是,
+	能方便的查询。 
+	*/
+    private final File mPluginFile;//插件Apk文件路径
     private final PackageParser mParser;
-    private final String mPackageName;
-    private final Context mHostContext;
-    private final PackageInfo mHostPackageInfo;
+    private final String mPackageName;//解析后获得插件Apk的包名
+    private final Context mHostContext;//保存宿主进程Context 
+    private final PackageInfo mHostPackageInfo;//宿主进程的PackageInfo实例
 
     private Map<ComponentName, Object> mActivityObjCache = new TreeMap<ComponentName, Object>(new ComponentNameComparator());
     private Map<ComponentName, Object> mServiceObjCache = new TreeMap<ComponentName, Object>(new ComponentNameComparator());
@@ -92,6 +98,8 @@ public class PluginPackageParser {
         mPluginFile = pluginFile;
         mParser = PackageParser.newPluginParser(hostContext);
         mParser.parsePackage(pluginFile, 0);
+		//通过mParser.parsePackage()解析插件Apk AndroidMainfest文件,获取相关信息并保存
+        //在mParser.parsePackage()函数内部，只是调用系统的PackageParser对象的parsePackage()函数，来获取插件Apk的Package实例。
         mPackageName = mParser.getPackageName();
         mHostPackageInfo = mHostContext.getPackageManager().getPackageInfo(mHostContext.getPackageName(), 0);
 

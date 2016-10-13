@@ -826,7 +826,7 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
     public int installPackage(String filepath, int flags) throws RemoteException {
         //install plugin
         String apkfile = null;
-        try {
+        try {//A
             PackageManager pm = mContext.getPackageManager();
             PackageInfo info = pm.getPackageArchiveInfo(filepath, 0);
             if (info == null) {
@@ -834,10 +834,10 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
             }
 
             apkfile = PluginDirHelper.getPluginApkFile(mContext, info.packageName);
-
+			//替换安装过程..
             if ((flags & PackageManagerCompat.INSTALL_REPLACE_EXISTING) != 0) {
-                forceStopPackage(info.packageName);
-                if (mPluginCache.containsKey(info.packageName)) {
+                forceStopPackage(info.packageName); //C 中解释如下
+                if (mPluginCache.containsKey(info.packageName)) {//B 中解释如下
                     deleteApplicationCacheFiles(info.packageName, null);
                 }
                 new File(apkfile).delete();
@@ -895,7 +895,7 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
                             }
                         }
                     }
-                    saveSignatures(pkgInfo);
+                    saveSignatures(pkgInfo);//解析成功之后，保存插件Apk的签名
 //                    if (pkgInfo.reqFeatures != null && pkgInfo.reqFeatures.length > 0) {
 //                        for (FeatureInfo reqFeature : pkgInfo.reqFeatures) {
 //                            Log.e(TAG, "reqFeature name=%s,flags=%s,glesVersion=%s", reqFeature.name, reqFeature.flags, reqFeature.getGlEsVersion());
