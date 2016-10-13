@@ -866,7 +866,7 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
 //                    }
 //                }
                 copyNativeLibs(mContext, apkfile, parser.getApplicationInfo(0));
-                dexOpt(mContext, apkfile, parser);
+                dexOpt(mContext, apkfile, parser);//非常重要
                 mPluginCache.put(parser.getPackageName(), parser);
                 mActivityManagerService.onPkgInstalled(mPluginCache, parser, parser.getPackageName());
                 sendInstalledBroadcast(info.packageName);
