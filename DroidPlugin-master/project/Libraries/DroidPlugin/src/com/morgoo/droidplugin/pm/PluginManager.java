@@ -97,6 +97,8 @@ public class PluginManager implements ServiceConnection {
             public void run() {
                 try {
                     mPluginManager.waitForReady();
+
+					//查看IPluginManagerImpl中的registerApplicationCallback
                     mPluginManager.registerApplicationCallback(new IApplicationCallback.Stub() {
 
                         @Override

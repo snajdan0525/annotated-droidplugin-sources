@@ -69,10 +69,11 @@ public abstract class BaseActivityManagerService {
 
     public void onCreate(IPluginManagerImpl pluginManagerImpl) throws Exception {
         if (mRemoteCallbackList == null) {
-            mRemoteCallbackList = new MyRemoteCallbackList();
+            mRemoteCallbackList = new MyRemoteCallbackList();//这是一个RemoteCallBackList,在binder的对端死掉的时候，会收到一个通知
         }
     }
 
+	
     private RemoteCallbackList<IApplicationCallback> mRemoteCallbackList;
 
     public String getProcessNameByPid(int pid) {
