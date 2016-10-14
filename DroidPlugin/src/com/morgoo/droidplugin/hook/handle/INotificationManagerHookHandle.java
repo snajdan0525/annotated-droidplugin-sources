@@ -325,39 +325,39 @@ public class INotificationManagerHookHandle extends BaseHookHandle {
             }
         }
 
-        if (VERSION.SDK_INT >= VERSION_CODES.M) {
-            android.graphics.drawable.Icon icon = notification.getSmallIcon();
-            if (icon != null) {
-                try {
-                    Object mString1Obj = FieldUtils.readField(icon, "mString1", true);
-                    if (mString1Obj instanceof String) {
-                        String mString1 = ((String) mString1Obj);
-                        if (PluginManager.getInstance().isPluginPackage(mString1)) {
-                            return true;
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, "fix Icon.smallIcon", e);
-                }
-            }
-        }
+//        if (VERSION.SDK_INT >= VERSION_CODES.M) {
+//            android.graphics.drawable.Icon icon = notification.getSmallIcon();
+//            if (icon != null) {
+//                try {
+//                    Object mString1Obj = FieldUtils.readField(icon, "mString1", true);
+//                    if (mString1Obj instanceof String) {
+//                        String mString1 = ((String) mString1Obj);
+//                        if (PluginManager.getInstance().isPluginPackage(mString1)) {
+//                            return true;
+//                        }
+//                    }
+//                } catch (Exception e) {
+//                    Log.e(TAG, "fix Icon.smallIcon", e);
+//                }
+//            }
+//        }
 
-        if (VERSION.SDK_INT >= VERSION_CODES.M) {
-            android.graphics.drawable.Icon icon = notification.getLargeIcon();
-            if (icon != null) {
-                try {
-                    Object mString1Obj = FieldUtils.readField(icon, "mString1", true);
-                    if (mString1Obj instanceof String) {
-                        String mString1 = ((String) mString1Obj);
-                        if (PluginManager.getInstance().isPluginPackage(mString1)) {
-                            return true;
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, "fix Icon.smallIcon", e);
-                }
-            }
-        }
+//        if (VERSION.SDK_INT >= VERSION_CODES.M) {
+//            android.graphics.drawable.Icon icon = notification.getLargeIcon();
+//            if (icon != null) {
+//                try {
+//                    Object mString1Obj = FieldUtils.readField(icon, "mString1", true);
+//                    if (mString1Obj instanceof String) {
+//                        String mString1 = ((String) mString1Obj);
+//                        if (PluginManager.getInstance().isPluginPackage(mString1)) {
+//                            return true;
+//                        }
+//                    }
+//                } catch (Exception e) {
+//                    Log.e(TAG, "fix Icon.smallIcon", e);
+//                }
+//            }
+//        }
 
         try {
             Bundle mExtras = (Bundle) FieldUtils.readField(notification, "extras", true);
@@ -419,27 +419,27 @@ public class INotificationManagerHookHandle extends BaseHookHandle {
                 hackRemoteViews(notification.headsUpContentView);
             }
 
-            if (VERSION.SDK_INT >= VERSION_CODES.M) {
-                android.graphics.drawable.Icon icon = notification.getSmallIcon();
-                if (icon != null) {
-                    Bitmap bitmap = drawableToBitMap(icon.loadDrawable(mHostContext));
-                    if (bitmap != null) {
-                        android.graphics.drawable.Icon newIcon = android.graphics.drawable.Icon.createWithBitmap(bitmap);
-                        FieldUtils.writeField(notification, "mSmallIcon", newIcon, true);
-                    }
-                }
-            }
-
-            if (VERSION.SDK_INT >= VERSION_CODES.M) {
-                android.graphics.drawable.Icon icon = notification.getLargeIcon();
-                if (icon != null) {
-                    Bitmap bitmap = drawableToBitMap(icon.loadDrawable(mHostContext));
-                    if (bitmap != null) {
-                        android.graphics.drawable.Icon newIcon = android.graphics.drawable.Icon.createWithBitmap(bitmap);
-                        FieldUtils.writeField(notification, "mLargeIcon", newIcon, true);
-                    }
-                }
-            }
+//            if (VERSION.SDK_INT >= VERSION_CODES.M) {
+//                android.graphics.drawable.Icon icon = notification.getSmallIcon();
+//                if (icon != null) {
+//                    Bitmap bitmap = drawableToBitMap(icon.loadDrawable(mHostContext));
+//                    if (bitmap != null) {
+//                        android.graphics.drawable.Icon newIcon = android.graphics.drawable.Icon.createWithBitmap(bitmap);
+//                        FieldUtils.writeField(notification, "mSmallIcon", newIcon, true);
+//                    }
+//                }
+//            }
+//
+//            if (VERSION.SDK_INT >= VERSION_CODES.M) {
+//                android.graphics.drawable.Icon icon = notification.getLargeIcon();
+//                if (icon != null) {
+//                    Bitmap bitmap = drawableToBitMap(icon.loadDrawable(mHostContext));
+//                    if (bitmap != null) {
+//                        android.graphics.drawable.Icon newIcon = android.graphics.drawable.Icon.createWithBitmap(bitmap);
+//                        FieldUtils.writeField(notification, "mLargeIcon", newIcon, true);
+//                    }
+//                }
+//            }
         }
     }
 

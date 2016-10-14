@@ -66,13 +66,15 @@ abstract class PackageParser {
     public final static int PARSE_TRUSTED_OVERLAY = 1 << 9;
 
     public static PackageParser newPluginParser(Context context) throws Exception {
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP_MR1) {
-            if ("1".equals(SystemPropertiesCompat.get("ro.build.version.preview_sdk", ""))) {
-                return new PackageParserApi22Preview1(context);
-            } else {
-                return new PackageParserApi22(context);//API 20
-            }
-        } else if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+//        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP_MR1) {
+//            if ("1".equals(SystemPropertiesCompat.get("ro.build.version.preview_sdk", ""))) {
+//                return new PackageParserApi22Preview1(context);
+//            } else {
+//                return new PackageParserApi22(context);//API 20
+//            }
+//        } else 
+        	
+    	if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             return new PackageParserApi21(context);//API 21
         } else if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1 && VERSION.SDK_INT <= VERSION_CODES.KITKAT_WATCH) {
             return new PackageParserApi20(context);//API 17,18,19,20

@@ -41,7 +41,7 @@ import java.util.Set;
 /**
  * Created by Andy Zhang(zhangyong232@gmail.com) on 2015/5/29.
  */
-@TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+
 class PackageParserApi22 extends PackageParserApi21 {
     private static final String TAG = PackageParserApi22Preview1.class.getSimpleName();
 
