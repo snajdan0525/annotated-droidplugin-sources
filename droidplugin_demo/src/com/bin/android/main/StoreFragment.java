@@ -56,6 +56,7 @@ public class StoreFragment extends ListFragment {
 
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
+			Log.i(TAG, "---onServiceConnected---");
 			startLoad();
 		}
 
@@ -157,6 +158,7 @@ public class StoreFragment extends ListFragment {
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
+		Log.i(TAG, "---onViewCreated---");
 		super.onViewCreated(view, savedInstanceState);
 		isViewCreated = true;
 		setEmptyText("没有在sdcard找到apk");
@@ -187,6 +189,7 @@ public class StoreFragment extends ListFragment {
 	}
 
 	private void startLoad() {
+		Log.i(TAG, "---startLoad---");
 		if (ActivityCompat.checkSelfPermission(getActivity(),
 				Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 			startLoadInner();
@@ -224,6 +227,7 @@ public class StoreFragment extends ListFragment {
 	}
 
 	private void startLoadInner() {
+		Log.i(TAG, "---startLoadInner---");
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
@@ -236,6 +240,7 @@ public class StoreFragment extends ListFragment {
 		new Thread("ApkScanner") {
 			@Override
 			public void run() {
+				Log.i(TAG, "---ApkScanner---");
 				File file = Environment
 						.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 

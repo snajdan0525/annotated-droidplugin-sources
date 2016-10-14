@@ -24,6 +24,7 @@ package com.morgoo.droidplugin;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 /**
  * Created by Andy Zhang(zhangyong232@gmail.com) 2014/12/5.

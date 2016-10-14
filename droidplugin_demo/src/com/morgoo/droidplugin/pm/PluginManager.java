@@ -91,11 +91,13 @@ public class PluginManager implements ServiceConnection {
 
     @Override
     public void onServiceConnected(final ComponentName componentName, final IBinder iBinder) {
+    	Log.i(TAG, "---onServiceConnected---");
         mPluginManager = IPluginManager.Stub.asInterface(iBinder);
         new Thread() {
             @Override
             public void run() {
                 try {
+                	Log.i(TAG, "---run()---");
                     mPluginManager.waitForReady();
                     mPluginManager.registerApplicationCallback(new IApplicationCallback.Stub() {
 
@@ -207,6 +209,7 @@ public class PluginManager implements ServiceConnection {
     public void connectToService() {
         if (mPluginManager == null) {
             try {
+            	Log.i(TAG, "---connectToService---");
                 Intent intent = new Intent(mHostContext, PluginManagerService.class);
                 intent.setPackage(mHostContext.getPackageName());
                 mHostContext.startService(intent);
@@ -218,6 +221,7 @@ public class PluginManager implements ServiceConnection {
     }
 
     public void addServiceConnection(ServiceConnection sc) {
+    	Log.i(TAG, "---addServiceConnection---");
         sServiceConnection.add(new WeakReference<ServiceConnection>(sc));
     }
 
@@ -233,6 +237,7 @@ public class PluginManager implements ServiceConnection {
 
 
     public void init(Context hostContext) {
+    	Log.i(TAG, "---init---");
         mHostContext = hostContext;
         connectToService();
     }
@@ -242,6 +247,8 @@ public class PluginManager implements ServiceConnection {
     }
 
     public boolean isConnected() {
+    	Log.i(TAG, "---isConnected---");
+    	Log.i(TAG, "---isConnected---"+mPluginManager);
         return mHostContext != null && mPluginManager != null;
     }
 
