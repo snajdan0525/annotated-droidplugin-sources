@@ -47,11 +47,11 @@ public class StoreFragment extends ListFragment {
 	private static final String TAG = StoreFragment.class.getSimpleName();
 	private ArrayAdapter<ApkItem> adapter;
 	final Handler handler = new Handler();
-	private RemovedApkReceiver mRemovedApkBroadcastReceiver= new RemovedApkReceiver();
+	private RemovedApkReceiver mRemovedApkBroadcastReceiver = new RemovedApkReceiver();
 
 	public StoreFragment() {
 	}
-	
+
 	private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
 		@Override
@@ -60,14 +60,15 @@ public class StoreFragment extends ListFragment {
 		}
 
 		@Override
-		public void onServiceDisconnected(ComponentName name) {			
-		}		
+		public void onServiceDisconnected(ComponentName name) {
+		}
 	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mRemovedApkBroadcastReceiver.registerReceiver(getActivity().getApplication());
+		mRemovedApkBroadcastReceiver.registerReceiver(getActivity()
+				.getApplication());
 		adapter = new ArrayAdapter<ApkItem>(getActivity(), 0) {
 			@Override
 			public View getView(final int position, View convertView,
@@ -165,7 +166,8 @@ public class StoreFragment extends ListFragment {
 		if (PluginManager.getInstance().isConnected()) {
 			startLoad();
 		} else {
-			PluginManager.getInstance().addServiceConnection(mServiceConnection);
+			PluginManager.getInstance()
+					.addServiceConnection(mServiceConnection);
 		}
 	}
 
@@ -173,7 +175,8 @@ public class StoreFragment extends ListFragment {
 	public void onDestroyView() {
 		isViewCreated = false;
 		super.onDestroyView();
-		mRemovedApkBroadcastReceiver.unregisterReceiver(getActivity().getApplication());
+		mRemovedApkBroadcastReceiver.unregisterReceiver(getActivity()
+				.getApplication());
 	}
 
 	@Override
@@ -276,7 +279,7 @@ public class StoreFragment extends ListFragment {
 										public void run() {
 											adapter.add(new ApkItem(
 													getActivity(), info, apk
-															.getPath()));
+															.getPath()));//获取插件目录下每个apks对应的ApkItem信息
 										}
 									});
 								} catch (Exception e) {
@@ -375,10 +378,10 @@ public class StoreFragment extends ListFragment {
 		PluginManager.getInstance().removeServiceConnection(mServiceConnection);
 		super.onDestroy();
 	}
-	
+
 	public void onRefresh() {
-		Log.i(TAG,"onRefresh()");
-		if(isViewCreated) {
+		Log.i(TAG, "onRefresh()");
+		if (isViewCreated) {
 			setEmptyText("没有在sdcard找到apk");
 			setListAdapter(adapter);
 			setListShown(false);
@@ -386,13 +389,14 @@ public class StoreFragment extends ListFragment {
 			if (PluginManager.getInstance().isConnected()) {
 				startLoad();
 			} else {
-				PluginManager.getInstance().addServiceConnection(mServiceConnection);
+				PluginManager.getInstance().addServiceConnection(
+						mServiceConnection);
 			}
 		}
 	}
 
 	private class RemovedApkReceiver extends BroadcastReceiver {
-
+		// 注册应用程序卸载（安装）的广播
 		void registerReceiver(Context context) {
 			IntentFilter filter = new IntentFilter();
 			filter.addAction(PluginManager.ACTION_PACKAGE_ADDED);
@@ -408,15 +412,15 @@ public class StoreFragment extends ListFragment {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (PluginManager.ACTION_PACKAGE_REMOVED.equals(intent.getAction())) {
-                int N = adapter.getCount();
-                ApkItem iremovedItem = null;
-                for (int i = N-1; i >= 0; i--) {
-                    ApkItem item = adapter.getItem(i);
-                    iremovedItem = item;
-                    if (iremovedItem != null) {
-                        adapter.remove(iremovedItem);
-                    }
-                }                
+				int N = adapter.getCount();
+				ApkItem iremovedItem = null;
+				for (int i = N - 1; i >= 0; i--) {
+					ApkItem item = adapter.getItem(i);
+					iremovedItem = item;
+					if (iremovedItem != null) {
+						adapter.remove(iremovedItem);
+					}
+				}
 				onRefresh();
 			}
 		}

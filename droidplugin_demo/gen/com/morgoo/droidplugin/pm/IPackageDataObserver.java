@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: D:\\DroidPlugin\\DroidPlugin\\src\\com\\morgoo\\droidplugin\\pm\\IPackageDataObserver.aidl
+ * Original file: D:\\DroidPlugin\\droidplugin_demo\\src\\com\\morgoo\\droidplugin\\pm\\IPackageDataObserver.aidl
  */
 package com.morgoo.droidplugin.pm;
 /**
