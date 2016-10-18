@@ -106,6 +106,9 @@ public class PluginDirHelper {
         return enforceDirExists(new File(makePluginBaseDir(context, pluginInfoPackageName), "dalvik-cache"));
     }
 
+	/*
+	*data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/lib/
+	*/
     public static String getPluginNativeLibraryDir(Context context, String pluginInfoPackageName) {
         return enforceDirExists(new File(makePluginBaseDir(context, pluginInfoPackageName), "lib"));
     }

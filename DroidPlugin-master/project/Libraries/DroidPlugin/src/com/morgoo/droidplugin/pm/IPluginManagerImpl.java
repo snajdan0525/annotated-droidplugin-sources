@@ -834,14 +834,17 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
         String apkfile = null;
         try {//A
             PackageManager pm = mContext.getPackageManager();
-            PackageInfo info = pm.getPackageArchiveInfo(filepath, 0);
+            PackageInfo info = pm.getPackageArchiveInfo(filepath, 0);//插件的packageInfo对象
             if (info == null) {
                 return PackageManagerCompat.INSTALL_FAILED_INVALID_APK;
             }
-
+			/*
+			*	apkfile = /data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/apk/base-1.apk
+			*/
             apkfile = PluginDirHelper.getPluginApkFile(mContext, info.packageName);
-			//替换安装过程..
+			
             if ((flags & PackageManagerCompat.INSTALL_REPLACE_EXISTING) != 0) {
+				//替换安装过程
                 forceStopPackage(info.packageName); //C 中解释如下
                 if (mPluginCache.containsKey(info.packageName)) {//B 中解释如下
                     deleteApplicationCacheFiles(info.packageName, null);
@@ -861,7 +864,7 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
                         if (!mHostRequestedPermission.contains(requestedPermission) && b) {
                             Log.e(TAG, "No Permission %s", requestedPermission);
                             new File(apkfile).delete();
-                            return PluginManager.INSTALL_FAILED_NO_REQUESTEDPERMISSION;
+                            return PluginManager.INSTALL_FAILED_NO_REQUESTEDPERMISSION;//有权限没有声明
                         }
                     }
                 }
@@ -878,13 +881,18 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
                 sendInstalledBroadcast(info.packageName);
                 return PackageManagerCompat.INSTALL_SUCCEEDED;
             } else {
+            	//第一次安装
+            	/*
+            	* mPluginCache是一个packagePaser和packname的键值对,数据填充是在loadAllPlugin函数中完成的
+            	* 这里将已经安装的plugin Apk加载到内存中，以packagePaser的形式存放
+            	*/
                 if (mPluginCache.containsKey(info.packageName)) {
                     return PackageManagerCompat.INSTALL_FAILED_ALREADY_EXISTS;
                 } else {
                     forceStopPackage(info.packageName);
                     new File(apkfile).delete();
                     Utils.copyFile(filepath, apkfile);
-                    PluginPackageParser parser = new PluginPackageParser(mContext, new File(apkfile));
+                    PluginPackageParser parser = new PluginPackageParser(mContext, new File(apkfile));//生成对应的parser
                     parser.collectCertificates(0);
                     PackageInfo pkgInfo = parser.getPackageInfo(PackageManager.GET_PERMISSIONS | PackageManager.GET_SIGNATURES);
                     if (pkgInfo != null && pkgInfo.requestedPermissions != null && pkgInfo.requestedPermissions.length > 0) {
@@ -909,9 +917,9 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
 //                    }
 
                     copyNativeLibs(mContext, apkfile, parser.getApplicationInfo(0));
-                    dexOpt(mContext, apkfile, parser);
+                    dexOpt(mContext, apkfile, parser);//将优化的dex文件缓存到optimizedDirectory文件里面
                     mPluginCache.put(parser.getPackageName(), parser);
-                    mActivityManagerService.onPkgInstalled(mPluginCache, parser, parser.getPackageName());
+                    mActivityManagerService.onPkgInstalled(mPluginCache, parser, parser.getPackageName());//对插件进行管理
                     sendInstalledBroadcast(info.packageName);
                     return PackageManagerCompat.INSTALL_SUCCEEDED;
                 }
@@ -992,8 +1000,11 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
     }
 
     private void copyNativeLibs(Context context, String apkfile, ApplicationInfo applicationInfo) throws Exception {
-        String nativeLibraryDir = PluginDirHelper.getPluginNativeLibraryDir(context, applicationInfo.packageName);
-        ZipFile zipFile = null;
+		/*
+		* data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/lib/
+		*/
+		String nativeLibraryDir = PluginDirHelper.getPluginNativeLibraryDir(context, applicationInfo.packageName);
+		ZipFile zipFile = null;
         try {
             zipFile = new ZipFile(apkfile);
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
