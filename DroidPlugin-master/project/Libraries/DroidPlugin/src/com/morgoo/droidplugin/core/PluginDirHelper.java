@@ -29,16 +29,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * æ’ä»¶ç›®å½•ç»“æ„
- * åŸºæœ¬ç›®å½•ï¼š /data/data/com.HOST.PACKAGE/Plugin
- * å•ä¸ªæ’ä»¶çš„åŸºæœ¬ç›®å½•ï¼š /data/data/com.HOST.PACKAGE/Plugin
- * source_dirï¼š /data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/apk/apk-1.apk
- * æ•°æ®ç›®å½•ï¼š /data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/data/PLUGIN.PKG
- * dexç¼“å­˜ç›®å½•ï¼š /data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/dalvik-cache/
- * <p>
- * Created by Andy Zhang(zhangyong232@gmail.com) on 2015/2/5.
- */
+/** * ²å¼şÄ¿Â¼½á¹¹ 
+* »ù±¾Ä¿Â¼£º /data/data/com.HOST.PACKAGE/Plugin 
+* µ¥¸ö²å¼şµÄ»ù±¾Ä¿Â¼£º /data/data/com.HOST.PACKAGE/Plugin 
+* source_dir£º /data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/apk/apk-1.apk 
+* Êı¾İÄ¿Â¼£º /data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/data/PLUGIN.PKG 
+* dex»º´æÄ¿Â¼£º /data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/dalvik-cache/ 
+* <p> * Created by Andy Zhang(zhangyong232@gmail.com) on 2015/2/5. 
+*/
+
 public class PluginDirHelper {
 
 
@@ -46,7 +45,7 @@ public class PluginDirHelper {
 
     private static void init(Context context) {
         if (sBaseDir == null) {
-            sBaseDir = new File(context.getCacheDir().getParentFile(), "Plugin");
+            sBaseDir = new File(context.getCacheDir().getParentFile(), "Plugin");//data/data/com.snajdan.demo/Plugin
             enforceDirExists(sBaseDir);
         }
     }
@@ -68,6 +67,8 @@ public class PluginDirHelper {
         return enforceDirExists(sBaseDir);
     }
 
+
+	//data/data/com.snajdan.demo/Plugin/Plugin_PackageName/data
     public static String getPluginDataDir(Context context, String pluginInfoPackageName) {
         return enforceDirExists(new File(makePluginBaseDir(context, pluginInfoPackageName), "data/" + pluginInfoPackageName));
     }
@@ -92,11 +93,11 @@ public class PluginDirHelper {
         }
         return files;
     }
-
+	///data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/apk/ 
     public static String getPluginApkDir(Context context, String pluginInfoPackageName) {
         return enforceDirExists(new File(makePluginBaseDir(context, pluginInfoPackageName), "apk"));
     }
-
+	///data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/apk/base-1.apk
     public static String getPluginApkFile(Context context, String pluginInfoPackageName) {
         return new File(getPluginApkDir(context, pluginInfoPackageName), "base-1.apk").getPath();
     }
@@ -111,14 +112,17 @@ public class PluginDirHelper {
 
 
     public static String getPluginDalvikCacheFile(Context context, String pluginInfoPackageName) {
-        String dalvikCacheDir = getPluginDalvikCacheDir(context, pluginInfoPackageName);
 
+		// /data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/dalvik-cache/ 
+        String dalvikCacheDir = getPluginDalvikCacheDir(context, pluginInfoPackageName);
+		///data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/apk/base-1.apk
         String pluginApkFile = getPluginApkFile(context, pluginInfoPackageName);
         String apkName = new File(pluginApkFile).getName();
         String dexName = apkName.replace(File.separator, "@");
         if (dexName.startsWith("@")) {
             dexName = dexName.substring(1);
         }
+		// /data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/dalvik-cache/base1.apk@class.dex
         return new File(dalvikCacheDir, dexName + "@classes.dex").getPath();
     }
 

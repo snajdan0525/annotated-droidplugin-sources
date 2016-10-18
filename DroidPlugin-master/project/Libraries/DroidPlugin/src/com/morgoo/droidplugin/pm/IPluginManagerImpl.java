@@ -111,8 +111,8 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
     }
 
     private void onCreateInner() {
-        loadAllPlugin(mContext);
-        loadHostRequestedPermission();
+        loadAllPlugin(mContext);//Load所有已经安装的插件，并且解析
+        loadHostRequestedPermission();//或许所有的宿主程序已经申请的权限
         try {
             mHasLoadedOk.set(true);
             synchronized (mLock) {
@@ -137,18 +137,24 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
     }
 
 
+
     private void loadAllPlugin(Context context) {
         long b = System.currentTimeMillis();
         ArrayList<File> apkfiles = null;
         try {
             apkfiles = new ArrayList<File>();
+			//data/data/HOST_PACKAGE/Plugin
             File baseDir = new File(PluginDirHelper.getBaseDir(context));
             File[] dirs = baseDir.listFiles();
             for (File dir : dirs) {
                 if (dir.isDirectory()) {
+					/*
+					*data/data/com.HOST.PACKAGE/Plugin/PLUGIN.PKG/apk/base-1.apk
+					*插件apk所在的地方
+					*/
                     File file = new File(dir, "apk/base-1.apk");
                     if (file.exists()) {
-                        apkfiles.add(file);
+                        apkfiles.add(file);//将已经安装好的插件apk放入到apkFiles文件目录下
                     }
                 }
             }
@@ -186,7 +192,7 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
 
         Log.i(TAG, "Parse all apk cost %s ms", (System.currentTimeMillis() - b));
         b = System.currentTimeMillis();
-
+		//RemoteCallBackList的一些预处理
         try {
             mActivityManagerService.onCreate(IPluginManagerImpl.this);
         } catch (Throwable e) {
