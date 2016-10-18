@@ -91,7 +91,8 @@ public class PluginManager implements ServiceConnection {
 	//Á¬½ÓÉÏ·şÎñÒÔºó,»áµ÷ÓÃPluginManagerµÄonServiceConnected()£¬ ÕâÒ»²½±È½Ï¹Ø¼ü£º
     @Override
     public void onServiceConnected(final ComponentName componentName, final IBinder iBinder) {
-    	/*´´½¨²¢±£´æIPluginManagerImpl Proxy¶ÔÏó£¬
+       /*
+        *´´½¨²¢±£´æIPluginManagerImpl Proxy¶ÔÏó£¬
     	*´´½¨Ïß³Ì,µÈ´ıIPluginManagerImpl³õÊ¼»¯Íê³Éºó,
     	*µÈ´ıIPluginManagerImpl³õÊ¼»¯Íê³Éºó,·Ö·¢·şÎñÁ¬½Ó³É¹¦¼àÌı,×¢²á·şÎñËÀÍö»Øµ÷
     	*/
@@ -104,11 +105,12 @@ public class PluginManager implements ServiceConnection {
 
 					//²é¿´IPluginManagerImplÖĞµÄregisterApplicationCallback
                     mPluginManager.registerApplicationCallback(new IApplicationCallback.Stub() {
-
+q
                         @Override
                         public Bundle onCallback(Bundle extra) throws RemoteException {
                             return extra;
                         }
+						
                     });
 
                     Iterator<WeakReference<ServiceConnection>> iterator = sServiceConnection.iterator();
@@ -161,7 +163,7 @@ public class PluginManager implements ServiceConnection {
                 iterator.remove();
             }
         }
-        //æœåŠ¡è¿æ¥æ–­å¼€ï¼Œéœ€è¦é‡æ–°è¿æ¥ã€‚
+        //·şÎñÁ¬½Ó¶Ï¿ª£¬ĞèÒªÖØĞÂÁ¬½Ó¡£
         connectToService();
     }
 
