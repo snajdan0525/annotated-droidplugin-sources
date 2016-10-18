@@ -91,6 +91,10 @@ public class PluginManager implements ServiceConnection {
 	//连接上服务以后,会调用PluginManager的onServiceConnected()， 这一步比较关键：
     @Override
     public void onServiceConnected(final ComponentName componentName, final IBinder iBinder) {
+    	/*创建并保存IPluginManagerImpl Proxy对象，
+    	*创建线程,等待IPluginManagerImpl初始化完成后,
+    	*等待IPluginManagerImpl初始化完成后,分发服务连接成功监听,注册服务死亡回调
+    	*/
         mPluginManager = IPluginManager.Stub.asInterface(iBinder);//PluginManagerService的代理对象ImpleOPluginManager
         new Thread() {
             @Override

@@ -45,10 +45,11 @@ public class PluginManagerService extends Service {
         super.onCreate();
         keepAlive();
         mPluginPackageManager = new IPluginManagerImpl(this);
+		//构造函数中只有一个MyActivityManagerService对象，用来对插件进程进行管理的
         mPluginPackageManager.onCreate();
 
     }
-
+	//提升service所在进程的优先级
     private void keepAlive() {
         try {
             Notification notification = new Notification();

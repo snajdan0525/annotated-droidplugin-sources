@@ -96,7 +96,7 @@ public class PluginPackageParser {
     public PluginPackageParser(Context hostContext, File pluginFile) throws Exception {
         mHostContext = hostContext;
         mPluginFile = pluginFile;
-        mParser = PackageParser.newPluginParser(hostContext);
+        mParser = PackageParser.newPluginParser(hostContext);//根据当前SDK版本获取与之对应的PackageParser实例mParser
         mParser.parsePackage(pluginFile, 0);
 		//通过mParser.parsePackage()解析插件Apk AndroidMainfest文件,获取相关信息并保存
         //在mParser.parsePackage()函数内部，只是调用系统的PackageParser对象的parsePackage()函数，来获取插件Apk的Package实例。

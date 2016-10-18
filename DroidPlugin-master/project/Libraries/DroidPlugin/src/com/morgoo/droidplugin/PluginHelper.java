@@ -176,6 +176,7 @@ public class PluginHelper implements ServiceConnection {
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
         PluginProcessManager.setHookEnable(true, true);
+		//注册服务连接，等待服务启动完成后，调用PluginProcessManager.setHookEnable(true)函数打开Hook开关。 
     }
 
     @Override

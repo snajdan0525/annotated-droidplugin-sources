@@ -96,9 +96,17 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
 
     private Map<String, Signature[]> mSignatureCache = new HashMap<String, Signature[]>();
 
+
+	/*
+	*由此我们可以知道PluginManagerService主要职责:
+	*1.装载已经安装的插件Apk 
+	*2.插件Apk的安装和卸载 
+	*3.插件Apk信息的查询,
+	*4.以及插件进程管理等。 
+	*/
     public IPluginManagerImpl(Context context) {
         mContext = context;
-        mActivityManagerService = new MyActivityManagerService(mContext);
+        mActivityManagerService = new MyActivityManagerService(mContext);//主要任务就是进程管理
     }
 
     public void onCreate() {
