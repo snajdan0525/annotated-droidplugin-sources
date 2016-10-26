@@ -169,12 +169,12 @@ public class IActivityManagerHookHandle extends BaseHookHandle {
                     PluginPatchManager.getInstance().startPluginActivity(intent);
                     return false;
                 }
-                ActivityInfo activityInfo = resolveActivity(intent);
+                ActivityInfo activityInfo = resolveActivity(intent);//获取activityinfo并且确定是一个插件程序
 				/*
 				*如果获取到的intent是插件程序，则进入包装流程
 				*/
                 if (activityInfo != null && isPackagePlugin(activityInfo.packageName)) {
-                    ComponentName component = selectProxyActivity(intent);
+                    ComponentName component = selectProxyActivity(intent);//根据待启动插件的intent获取相对应的stubActivity
                     if (component != null) {
                         Intent newIntent = new Intent();
                         try {
@@ -184,8 +184,8 @@ public class IActivityManagerHookHandle extends BaseHookHandle {
                             Log.w(TAG, "Set Class Loader to new Intent fail", e);
                         }
                         newIntent.setComponent(component);
-                        newIntent.putExtra(Env.EXTRA_TARGET_INTENT, intent);
-                        newIntent.setFlags(intent.getFlags());
+                        newIntent.putExtra(Env.EXTRA_TARGET_INTENT, intent);// 原始intent对应EXTRA_TARGET_INTEN
+                        newIntent.setFlags(intent.getFlags());//保持原有启动flag
 
 
                         String callingPackage = (String) args[1];
@@ -238,16 +238,16 @@ public class IActivityManagerHookHandle extends BaseHookHandle {
             int intentOfArgIndex = findFirstIntentIndexInArgs(args);
             if (args != null && args.length > 1 && intentOfArgIndex >= 0) {
                 Intent intent = (Intent) args[intentOfArgIndex];
-                ActivityInfo activityInfo = resolveActivity(intent);
+                ActivityInfo activityInfo = resolveActivity(intent);//获取activityinfo并且确定是一个插件程序
                 if (activityInfo != null && isPackagePlugin(activityInfo.packageName)) {
-                    ComponentName component = selectProxyActivity(intent);
+                    ComponentName component = selectProxyActivity(intent);//根据待启动插件的intent获取相对应的stubActivity
                     if (component != null) {
                         Intent newIntent = new Intent();
                         newIntent.setComponent(component);
                         newIntent.putExtra(Env.EXTRA_TARGET_INTENT, intent);// 原始intent对应EXTRA_TARGET_INTENT
-                        newIntent.setFlags(intent.getFlags());
+                        newIntent.setFlags(intent.getFlags());//保持原有启动flag
                         if (TextUtils.equals(mHostContext.getPackageName(), activityInfo.packageName)) {
-                            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//如果是宿主程序启动的插件，加上FLAG_ACTIVITY_NEW_TASK在一个新的task中启动插件
                         }
                         args[intentOfArgIndex] = newIntent;
                     } else {

@@ -294,7 +294,7 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
     public ActivityInfo getActivityInfo(ComponentName className, int flags) throws RemoteException {
         waitForReadyInner();
         try {
-            String pkg = getAndCheckCallingPkg(className.getPackageName());
+            String pkg = getAndCheckCallingPkg(className.getPackageName());//获取待启动组件的包名
             if (pkg != null) {
                 enforcePluginFileExists();
                 PluginPackageParser parser = mPluginCache.get(className.getPackageName());
@@ -1242,6 +1242,10 @@ public class IPluginManagerImpl extends IPluginManager.Stub {
     //
     //////////////////////////////////////
 
+	
+	/*
+	*选出一个合适的stub activity，根据launch mode还有theme进行判断
+	*/
     @Override
     public ActivityInfo selectStubActivityInfo(ActivityInfo pluginInfo) throws RemoteException {
         return mActivityManagerService.selectStubActivityInfo(Binder.getCallingPid(), Binder.getCallingUid(), pluginInfo);

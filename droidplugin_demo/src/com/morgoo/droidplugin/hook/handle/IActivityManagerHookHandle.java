@@ -166,9 +166,9 @@ public class IActivityManagerHookHandle extends BaseHookHandle {
                     PluginPatchManager.getInstance().startPluginActivity(intent);
                     return false;
                 }
-                ActivityInfo activityInfo = resolveActivity(intent);
+                ActivityInfo activityInfo = resolveActivity(intent);//获取activityinfo并且确定是一个插件程序
                 if (activityInfo != null && isPackagePlugin(activityInfo.packageName)) {
-                    ComponentName component = selectProxyActivity(intent);
+                    ComponentName component = selectProxyActivity(intent);//根据待启动插件的intent获取相对应的stubActivity的component
                     if (component != null) {
                         Intent newIntent = new Intent();
                         try {
@@ -177,8 +177,8 @@ public class IActivityManagerHookHandle extends BaseHookHandle {
                         } catch (Exception e) {
                             Log.w(TAG, "Set Class Loader to new Intent fail", e);
                         }
-                        newIntent.setComponent(component);
-                        newIntent.putExtra(Env.EXTRA_TARGET_INTENT, intent);
+                        newIntent.setComponent(component);//给新的intent设置待启动的ComponentName
+                        newIntent.putExtra(Env.EXTRA_TARGET_INTENT, intent);//记录下目标intent为EXTRA_TARGET_INTENT
                         newIntent.setFlags(intent.getFlags());
 
 
@@ -2099,9 +2099,9 @@ public class IActivityManagerHookHandle extends BaseHookHandle {
     private static ComponentName selectProxyActivity(Intent intent) {
         try {
             if (intent != null) {
-                ActivityInfo proxyInfo = PluginManager.getInstance().selectStubActivityInfo(intent);
+                ActivityInfo proxyInfo = PluginManager.getInstance().selectStubActivityInfo(intent);//stubActivity的acitivityInfo信息
                 if (proxyInfo != null) {
-                    return new ComponentName(proxyInfo.packageName, proxyInfo.name);
+                    return new ComponentName(proxyInfo.packageName, proxyInfo.name);//构造stubActivity的ComponentName对象并返回
                 }
             }
         } catch (Exception e) {
