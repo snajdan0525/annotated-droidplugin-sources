@@ -232,6 +232,7 @@ public class IActivityManagerHookHandle extends BaseHookHandle {
                 intent.setExtrasClassLoader(classLoader);
             }
         }
+	
 
         protected boolean doReplaceIntentForStartActivityAPILow(Object[] args) throws RemoteException {
             int intentOfArgIndex = findFirstIntentIndexInArgs(args);
@@ -243,7 +244,7 @@ public class IActivityManagerHookHandle extends BaseHookHandle {
                     if (component != null) {
                         Intent newIntent = new Intent();
                         newIntent.setComponent(component);
-                        newIntent.putExtra(Env.EXTRA_TARGET_INTENT, intent);
+                        newIntent.putExtra(Env.EXTRA_TARGET_INTENT, intent);// 原始intent对应EXTRA_TARGET_INTENT
                         newIntent.setFlags(intent.getFlags());
                         if (TextUtils.equals(mHostContext.getPackageName(), activityInfo.packageName)) {
                             newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
