@@ -157,16 +157,22 @@ public class IActivityManagerHookHandle extends BaseHookHandle {
             super(hostContext);
         }
 
+		/*
+		 *这是startActivity很重要的一步:对目标Intent进行包装
+		 */
         protected boolean doReplaceIntentForStartActivityAPIHigh(Object[] args) throws RemoteException {
             int intentOfArgIndex = findFirstIntentIndexInArgs(args);
             if (args != null && args.length > 1 && intentOfArgIndex >= 0) {
-                Intent intent = (Intent) args[intentOfArgIndex];
+                Intent intent = (Intent) args[intentOfArgIndex];//从参数列表中获取intent参数
                 //XXX String callingPackage = (String) args[1];
                 if (!PluginPatchManager.getInstance().canStartPluginActivity(intent)) {
                     PluginPatchManager.getInstance().startPluginActivity(intent);
                     return false;
                 }
                 ActivityInfo activityInfo = resolveActivity(intent);
+				/*
+				*如果获取到的intent是插件程序，则进入包装流程
+				*/
                 if (activityInfo != null && isPackagePlugin(activityInfo.packageName)) {
                     ComponentName component = selectProxyActivity(intent);
                     if (component != null) {

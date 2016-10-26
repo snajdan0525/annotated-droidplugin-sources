@@ -41,6 +41,7 @@ import java.util.List;
 
 /**
  * Hook some function on IActivityManager
+ * ¶ÔActivityManagerService½øÐÐhook
  * <p/>
  * Code by Andy Zhang (zhangyong232@gmail.com) on 15/2/7.
  */

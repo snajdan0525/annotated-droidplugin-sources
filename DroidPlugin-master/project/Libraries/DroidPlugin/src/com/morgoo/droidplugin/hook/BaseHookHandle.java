@@ -49,6 +49,7 @@ public abstract class BaseHookHandle {
         return sHookedMethodHandlers.keySet();
     }
 
+
     public HookedMethodHandler getHookedMethodHandler(Method method) {
         if (method != null) {
             return sHookedMethodHandlers.get(method.getName());
